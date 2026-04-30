@@ -4,6 +4,25 @@ A comprehensive, **layered educational platform** for learning about digital con
 
 Build your own protection systems layer-by-layer. Understand how digital rights management works. Learn from a practical, hands-on approach.
 
+## ❓ Quick Answers to Common Questions
+
+**Do I need OBS Studio?** 🙈 **NO!** 
+ProtectLayer is fully self-contained. OBS is optional only for the Advanced path (4-8 weeks). Beginner and Intermediate paths need zero external software.
+
+**What operating systems are supported?** ✅
+Windows, macOS, and Linux (Ubuntu, Debian, Fedora, Arch, etc.) - [Installation Guide](docs/INSTALLATION.md)
+
+**Is this free?** ✅
+100% free, open source (MIT License), no accounts, no hidden costs.
+
+**Do I need to be a programmer?** 🤔
+No! Start with Beginner path (2-3 hours, no coding). Intermediate and Advanced paths require Python/C++ knowledge.
+
+**Is this legal?** ⚖️
+Yes, for education. See [Legal FAQ](docs/FAQ.md#-legal--ethics), [Disclaimer](docs/DISCLAIMER.md), and [Ethics](docs/ETHICS.md).
+
+---
+
 ## ⚠️ LEGAL NOTICE
 
 **This is an EDUCATIONAL PROJECT ONLY.**
@@ -16,12 +35,13 @@ By using ProtectLayer, you agree to:
 
 **The creators assume NO LIABILITY for misuse or illegal use.**
 
-See [DISCLAIMER.md](docs/DISCLAIMER.md) for complete terms.
+See [DISCLAIMER.md](docs/DISCLAIMER.md) for complete terms. | [ETHICS.md](docs/ETHICS.md) for ethical framework.
 
 ---
 
 ## 🚀 Quick Start
 
+### Setup (One Time)
 ```bash
 # Clone the repository
 git clone https://github.com/ireallydumb/protectlayer-edu.git
@@ -32,14 +52,33 @@ chmod +x setup.sh
 ./setup.sh
 ```
 
-That's it! The setup script will:
-- ✅ Detect your operating system
-- ✅ Check Python installation
-- ✅ Create virtual environment
-- ✅ Install dependencies
-- ✅ Download test content
-- ✅ Initialize your student profile
-- ✅ Launch the dashboard
+### Launch (Every Time)
+Once setup is complete, launching is **super easy**:
+
+**Linux/macOS:**
+```bash
+./launch.sh
+```
+
+**Windows:**
+```bash
+launch.bat
+```
+
+**Any platform:**
+```bash
+python3 launch.py
+```
+
+That's it! You'll see an interactive menu to start learning. ✅
+
+### What Setup Does
+- ✅ Detects your operating system
+- ✅ Checks Python installation
+- ✅ Creates virtual environment
+- ✅ Installs dependencies
+- ✅ Initializes your student profile
+- ✅ Sets up progress tracking
 
 ---
 
@@ -150,12 +189,33 @@ This cycle repeats, building security thinking from the ground up.
 
 ## 📖 Documentation
 
-- **[INSTALLATION.md](docs/INSTALLATION.md)** - Detailed setup guide
-- **[LEARNING_PATHS.md](docs/LEARNING_PATHS.md)** - Choose your path
-- **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** - How the system works
-- **[DISCLAIMER.md](docs/DISCLAIMER.md)** - Legal terms & responsible use
-- **[FAQ.md](docs/FAQ.md)** - Common questions
-- **[ETHICS.md](docs/ETHICS.md)** - Ethical considerations
+### 🚀 Getting Started
+- **[QUICK_START.md](QUICK_START.md)** ← Start here! (2 minutes)
+- **[docs/INSTALLATION.md](docs/INSTALLATION.md)** - Complete OS-specific setup guides
+  - Windows (step-by-step commands)
+  - macOS (Homebrew or direct)
+  - Linux (Ubuntu, Fedora, Arch, etc.)
+  - Troubleshooting for every OS
+
+### 📚 Learning & Understanding
+- **[docs/FAQ.md](docs/FAQ.md)** - Answers to common questions
+  - "Do I need OBS?" → NO! (answered)
+  - System requirements
+  - Time estimates
+  - Privacy questions
+  - Legal/ethical questions
+- **[docs/LEARNING_PATHS.md](docs/LEARNING_PATHS.md)** - Choose your learning path
+  - Beginner (2-3 hours, no coding)
+  - Intermediate (1-2 weeks, Python)
+  - Advanced (4-8 weeks, production systems)
+
+### ⚖️ Important
+- **[docs/DISCLAIMER.md](docs/DISCLAIMER.md)** - Legal terms & responsibilities
+- **[docs/ETHICS.md](docs/ETHICS.md)** - Ethical framework for responsible learning
+
+### 🏗️ Technical
+- **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** - How the system works
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - How to contribute
 
 ---
 
@@ -318,16 +378,35 @@ Special thanks to the open-source community for the tools that make this possibl
 
 ---
 
-## ⚡ Quick Links
+## ⚡ Quick Navigation
 
-- [Installation Guide](docs/INSTALLATION.md)
-- [Learning Paths](docs/LEARNING_PATHS.md)
-- [FAQ](docs/FAQ.md)
-- [Legal Disclaimer](docs/DISCLAIMER.md)
-- [Architecture](docs/ARCHITECTURE.md)
-- [GitHub Releases](https://github.com/ireallydumb/protectlayer-edu/releases)
+### New to ProtectLayer?
+1. **Read:** [QUICK_START.md](QUICK_START.md) (2 minutes)
+2. **Install:** [docs/INSTALLATION.md](docs/INSTALLATION.md) (5 minutes)
+3. **Run:** `./setup.sh` then `./launch.sh`
+4. **Learn:** Start with Layer 1
+
+### Common Questions Answered
+- **"Do I need OBS?"** → [docs/FAQ.md](docs/FAQ.md#q-do-i-need-obs-studio-installed)
+- **"What are system requirements?"** → [docs/FAQ.md](docs/FAQ.md#-system-requirements)
+- **"How long does this take?"** → [docs/FAQ.md](docs/FAQ.md#-learning--paths)
+- **"Is this legal?"** → [docs/DISCLAIMER.md](docs/DISCLAIMER.md) & [docs/FAQ.md](docs/FAQ.md#-legal--ethics)
+- **"Is this for piracy?"** → [docs/ETHICS.md](docs/ETHICS.md)
+
+### Full Documentation
+- **Installation:** [docs/INSTALLATION.md](docs/INSTALLATION.md) (Windows, macOS, Linux)
+- **FAQ:** [docs/FAQ.md](docs/FAQ.md) (50+ questions answered)
+- **Learning Paths:** [docs/LEARNING_PATHS.md](docs/LEARNING_PATHS.md) (Choose your journey)
+- **Ethics:** [docs/ETHICS.md](docs/ETHICS.md) (Responsible learning)
+- **Legal:** [docs/DISCLAIMER.md](docs/DISCLAIMER.md) (Terms & conditions)
+- **Contributing:** [CONTRIBUTING.md](CONTRIBUTING.md) (How to help)
+
+### Resources
+- [GitHub Issues](https://github.com/ireallydumb/protectlayer-edu/issues) - Report bugs
+- [GitHub Discussions](https://github.com/ireallydumb/protectlayer-edu/discussions) - Ask questions
+- [GitHub Releases](https://github.com/ireallydumb/protectlayer-edu/releases) - Download versions
 
 ---
 
-**Ready to learn? Start with `./setup.sh` and then read [LEARNING_PATHS.md](docs/LEARNING_PATHS.md)** 🎓
+**Ready? Start with [QUICK_START.md](QUICK_START.md) 🚀**
 
