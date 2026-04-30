@@ -98,24 +98,25 @@ echo.
 echo ProtectLayer is ready to use!
 echo.
 echo Next steps:
-echo   1. Read the documentation:  cat docs\LEARNING_PATHS.md
-echo   2. Start with Layer 1:      cd layers\layer1_detection
-echo   3. Run the tutorial:        python tutorial.py
-echo   4. View your progress:      python dashboard\app.py
+echo   1. Launch the app:          launch.bat
+echo   2. Read QUICK_START:        type QUICK_START.md
+echo   3. Choose a learning path:  Start with Layer 1
 echo.
 echo Documentation:
+echo   - Quick Start:     QUICK_START.md
+echo   - Installation:    docs\INSTALLATION.md
 echo   - Learning Paths:  docs\LEARNING_PATHS.md
 echo   - FAQ:             docs\FAQ.md
 echo   - Legal:           docs\DISCLAIMER.md
 echo.
 
-set /p "launch=Launch dashboard now? (yes/no): "
+set /p "launch=Launch ProtectLayer now? (yes/no): "
 if /i "%launch%"=="yes" (
     echo.
-    echo Opening http://localhost:5000...
-    python dashboard\app.py
+    echo Launching ProtectLayer...
+    call launch.bat
 ) else (
     echo.
-    echo To launch later, run: python dashboard\app.py
+    echo To launch later, run: launch.bat
     pause
 )

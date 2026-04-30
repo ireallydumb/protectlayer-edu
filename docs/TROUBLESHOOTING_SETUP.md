@@ -4,6 +4,44 @@ Common issues during `./setup.sh` or `setup.bat` and how to fix them.
 
 ---
 
+## 🔴 "can't open file 'dashboard/app.py': No such file or directory"
+
+**Error Message:**
+```
+Python3: can't open file '/path/to/protectlayer-edu/dashboard/app.py': 
+{Errno 2} No such file in the directory
+```
+
+**What it means:**
+- The setup script tried to launch a dashboard that doesn't exist
+- This is a leftover reference from the old setup flow
+
+**Solution:**
+
+Don't worry - you don't need the dashboard! Use the **launcher instead**:
+
+```bash
+# macOS/Linux
+./launch.sh
+
+# Windows
+launch.bat
+
+# Or from anywhere
+python3 launch.py
+```
+
+The launcher is much better:
+- ✅ Interactive menu system
+- ✅ Choose your layer
+- ✅ View progress
+- ✅ Track student profile
+- ✅ Built-in documentation browser
+
+**This is the recommended way to use ProtectLayer!**
+
+---
+
 ## 🔴 "EOFError: EOF when reading a line"
 
 **Error Message:**
@@ -14,11 +52,17 @@ EOFError: EOF when reading a line
 
 **What it means:**
 - The setup script tried to get input from you, but stdin (keyboard input) wasn't available
-- This happens when:
+- This typically happens when:
   - Running setup in a non-interactive environment
   - SSH connection without proper terminal forwarding
   - Running in a CI/CD pipeline or container
   - Terminal disconnected during setup
+
+**Version Note:**
+This issue was fixed in commit `9957ce4`. If you're using an older version, update:
+```bash
+git pull origin main
+```
 
 **Solution:**
 

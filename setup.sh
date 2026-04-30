@@ -254,12 +254,13 @@ launch_dashboard() {
     echo -e "${GREEN}ProtectLayer is ready to use!${NC}"
     echo ""
     echo "Next steps:"
-    echo "  1. Read the documentation:  ${BLUE}cat docs/LEARNING_PATHS.md${NC}"
-    echo "  2. Start with Layer 1:      ${BLUE}cd layers/layer1_detection${NC}"
-    echo "  3. Run the tutorial:        ${BLUE}python3 tutorial.py${NC}"
-    echo "  4. View your progress:      ${BLUE}python3 dashboard/app.py${NC}"
+    echo "  1. Launch the app:          ${BLUE}./launch.sh${NC} (or ${BLUE}launch.bat${NC} on Windows)"
+    echo "  2. Read QUICK_START:        ${BLUE}cat QUICK_START.md${NC}"
+    echo "  3. Choose a learning path:  Start with Layer 1"
     echo ""
     echo "Documentation:"
+    echo "  - Quick Start:     QUICK_START.md"
+    echo "  - Installation:    docs/INSTALLATION.md"
     echo "  - Learning Paths:  docs/LEARNING_PATHS.md"
     echo "  - FAQ:             docs/FAQ.md"
     echo "  - Legal:           docs/DISCLAIMER.md"
@@ -267,19 +268,25 @@ launch_dashboard() {
     
     # Check if running in interactive mode
     if [ -t 0 ]; then
-        read -p "Launch dashboard now? (yes/no): " launch_choice
+        read -p "Launch ProtectLayer now? (yes/no): " launch_choice
         if [[ "$launch_choice" == "yes" ]]; then
             echo ""
-            print_section "Launching Dashboard"
-            echo "Opening http://localhost:5000..."
-            echo "(Press Ctrl+C to stop)"
-            python3 dashboard/app.py
+            print_section "Launching ProtectLayer"
+            if [[ "$OS_TYPE" == "MinGw" ]]; then
+                launch.bat
+            else
+                ./launch.sh
+            fi
         fi
     else
-        # Non-interactive mode - skip dashboard launch
+        # Non-interactive mode - skip launcher
         echo ""
-        echo -e "${YELLOW}(Skipping dashboard launch in non-interactive mode)${NC}"
-        echo -e "${YELLOW}To launch manually, run: python3 dashboard/app.py${NC}"
+        echo -e "${YELLOW}(Skipping launcher in non-interactive mode)${NC}"
+        if [[ "$OS_TYPE" == "MinGw" ]]; then
+            echo -e "${YELLOW}To launch, run: launch.bat${NC}"
+        else
+            echo -e "${YELLOW}To launch, run: ./launch.sh${NC}"
+        fi
     fi
 }
 
