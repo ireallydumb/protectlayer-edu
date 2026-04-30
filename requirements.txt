@@ -1,0 +1,51 @@
+# ProtectLayer Requirements
+
+# Core
+Flask==2.3.3
+Flask-CORS==4.0.0
+Werkzeug==2.3.7
+
+# Database
+SQLAlchemy==2.0.21
+Alembic==1.12.0
+
+# Video Processing
+opencv-python==4.8.1.78
+numpy==1.24.3
+Pillow==10.0.0
+scipy==1.11.3
+
+# Image Processing
+imageio==2.33.1
+scikit-image==0.21.0
+
+# Cryptography
+cryptography==41.0.4
+pycryptodome==3.18.0
+
+# Testing
+pytest==7.4.2
+pytest-cov==4.1.0
+pytest-mock==3.12.0
+
+# Code Quality
+black==23.11.0
+flake8==6.1.0
+pylint==3.0.2
+
+# Utilities
+python-dotenv==1.0.0
+requests==2.31.0
+pyyaml==6.0.1
+tqdm==4.66.1
+
+# Development
+ipython==8.16.0
+jupyter==1.0.0
+
+# OBS Plugin Helper (optional, for advanced students)
+# obs-websocket-py==0.5.3
+
+# Voice/Audio (for future enhancements)
+# pyttsx3==2.90
+# pydub==0.25.1
