@@ -64,11 +64,16 @@ show_disclaimer() {
     echo "• See docs/DISCLAIMER.md for complete legal terms"
     echo ""
     
-    read -p "Do you agree to these terms and accept full responsibility? (yes/no): " response
-    
-    if [[ "$response" != "yes" ]]; then
-        print_error "Setup cancelled. You must agree to the terms to continue."
-        exit 1
+    # Check if running in interactive mode
+    if [ -t 0 ]; then
+        read -p "Do you agree to these terms and accept full responsibility? (yes/no): " response
+        if [[ "$response" != "yes" ]]; then
+            print_error "Setup cancelled. You must agree to the terms to continue."
+            exit 1
+        fi
+    else
+        # Non-interactive mode - assume user has read disclaimer by using setup.sh
+        print_warning "Running in non-interactive mode. Terms accepted by default."
     fi
     
     print_success "Terms accepted"
@@ -210,13 +215,21 @@ else:
     # Generate ID
     student_id = f"student_{secrets.token_hex(16)}"
     
-    # Get optional name
-    display_name = input("\nOptional: Enter your name (or press Enter to skip): ").strip()
+    # Get optional name (with fallback for non-interactive environments)
+    display_name = "Anonymous Learner"
+    try:
+        user_input = input("\nOptional: Enter your name (or press Enter to skip): ").strip()
+        if user_input:
+            display_name = user_input
+    except (EOFError, KeyboardInterrupt):
+        # stdin not available or user interrupted - use default
+        print("(Using default name)")
+        pass
     
     # Create config
     config = {
         "student_id": student_id,
-        "display_name": display_name if display_name else "Anonymous Learner",
+        "display_name": display_name,
         "created_at": datetime.now().isoformat(),
         "version": "1.0"
     }
@@ -252,14 +265,21 @@ launch_dashboard() {
     echo "  - Legal:           docs/DISCLAIMER.md"
     echo ""
     
-    read -p "Launch dashboard now? (yes/no): " launch_choice
-    
-    if [[ "$launch_choice" == "yes" ]]; then
+    # Check if running in interactive mode
+    if [ -t 0 ]; then
+        read -p "Launch dashboard now? (yes/no): " launch_choice
+        if [[ "$launch_choice" == "yes" ]]; then
+            echo ""
+            print_section "Launching Dashboard"
+            echo "Opening http://localhost:5000..."
+            echo "(Press Ctrl+C to stop)"
+            python3 dashboard/app.py
+        fi
+    else
+        # Non-interactive mode - skip dashboard launch
         echo ""
-        print_section "Launching Dashboard"
-        echo "Opening http://localhost:5000..."
-        echo "(Press Ctrl+C to stop)"
-        python3 dashboard/app.py
+        echo -e "${YELLOW}(Skipping dashboard launch in non-interactive mode)${NC}"
+        echo -e "${YELLOW}To launch manually, run: python3 dashboard/app.py${NC}"
     fi
 }
 

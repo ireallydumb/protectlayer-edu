@@ -29,6 +29,14 @@ class ProtectLayerLauncher:
         with open(self.config_file) as f:
             return json.load(f)
     
+    def safe_input(self, prompt):
+        """Get input safely, handling non-interactive environments"""
+        try:
+            return input(prompt).strip()
+        except (EOFError, KeyboardInterrupt):
+            print("\n(Non-interactive mode detected - exiting)")
+            return "Q"
+    
     def show_menu(self):
         """Display main menu"""
         config = self.load_config()
@@ -81,7 +89,7 @@ class ProtectLayerLauncher:
         
         print(f"\n   📁 Full path: {layer_dir}\n")
         
-        choice = input("What would you like to do?\n  1. View README\n  2. Run tutorial\n  3. Open folder\n  4. Back\nChoice: ").strip()
+        choice = self.safe_input("What would you like to do?\n  1. View README\n  2. Run tutorial\n  3. Open folder\n  4. Back\nChoice: ")
         
         if choice == "1" and readme.exists():
             self.show_file(readme)
@@ -108,7 +116,7 @@ class ProtectLayerLauncher:
             for i, line in enumerate(lines):
                 print(line)
                 if (i + 1) % 30 == 0 and i < len(lines) - 1:
-                    response = input("\n--- More (press Enter to continue, 'q' to quit) ---\n")
+                    response = self.safe_input("\n--- More (press Enter to continue, 'q' to quit) ---\n")
                     if response.lower() == 'q':
                         break
         except Exception as e:
@@ -179,7 +187,7 @@ class ProtectLayerLauncher:
         
         while True:
             self.show_menu()
-            choice = input("Select option: ").strip().upper()
+            choice = self.safe_input("Select option: ").upper()
             
             if choice in ["1", "2", "3", "4", "5"]:
                 self.open_layer(int(choice))
