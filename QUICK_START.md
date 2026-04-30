@@ -2,17 +2,25 @@
 
 Get ProtectLayer up and running in 2 minutes!
 
+> **No extra software needed!** ProtectLayer is self-contained. OBS is optional (only for Advanced 4-8 week path).
+
 ## Step 1: Setup (One Time)
+
+**For detailed OS-specific instructions, see [docs/INSTALLATION.md](docs/INSTALLATION.md)**
+
+### Quick Setup
 
 ```bash
 # Clone the repository
 git clone https://github.com/ireallydumb/protectlayer-edu.git
 cd protectlayer-edu
 
-# Run setup
+# Run setup (handles everything)
 chmod +x setup.sh
 ./setup.sh
 ```
+
+**Windows users:** Use `setup.bat` instead
 
 The setup script will:
 - ✅ Check your Python installation
@@ -50,7 +58,7 @@ python3 launch.py
 
 ## What You Get
 
-Once launched, you'll see:
+Once launched, you'll see an interactive menu:
 
 ```
 ============================================================
@@ -76,6 +84,18 @@ From here you can:
 - 📊 **Track progress** - See what you've completed
 - 📚 **Read docs** - View any documentation
 - 👤 **View profile** - Check your student ID
+
+## Do I Need OBS or External Software?
+
+**NO!** ProtectLayer is fully self-contained:
+
+| Path | Duration | External Tools | Details |
+|------|----------|---|---|
+| **Beginner** | 2-3 hours | ✅ **None** | Pure Python, learn concepts |
+| **Intermediate** | 1-2 weeks | ✅ **None** | Python + hands-on building |
+| **Advanced** | 4-8 weeks | ⚠️ OBS optional | Only if building OBS plugins |
+
+**Start with Beginner or Intermediate - zero extra downloads!**
 
 ---
 
@@ -114,17 +134,13 @@ Each layer has:
 
 ## Troubleshooting
 
-### "Virtual environment not found"
-Run `./setup.sh` first
-
-### "Python 3 not found"
-Install Python 3.8+ from https://www.python.org/
-
-### "Permission denied" (Mac/Linux)
-Run: `chmod +x launch.sh setup.sh`
-
-### "Can't find venv/Scripts/activate.bat" (Windows)
-Run `setup.bat` first
+For comprehensive troubleshooting:
+- 📖 See **[docs/INSTALLATION.md](docs/INSTALLATION.md)** Troubleshooting section
+- 🆘 Common issues:
+  - "Python not found" → Install Python 3.8+
+  - "Permission denied" → `chmod +x setup.sh launch.sh`
+  - "Virtual env not found" → Run `./setup.sh` first
+  - "Module not found" → Activate venv: `source venv/bin/activate`
 
 ---
 
@@ -158,4 +174,37 @@ Run `setup.bat` first
 
 ---
 
-**Ready? Start with:** `./setup.sh` then `./launch.sh` 🚀
+## Installation by OS
+
+For complete step-by-step instructions:
+
+- **[📖 Full Installation Guide](docs/INSTALLATION.md)**
+  - 🪟 Windows instructions
+  - 🍎 macOS instructions  
+  - 🐧 Linux instructions (Ubuntu, Fedora, Arch)
+  - ❓ Troubleshooting
+
+---
+
+## Quick OS Commands
+
+**Linux/macOS:**
+```bash
+git clone https://github.com/ireallydumb/protectlayer-edu.git
+cd protectlayer-edu
+chmod +x setup.sh launch.sh
+./setup.sh
+./launch.sh
+```
+
+**Windows (Command Prompt):**
+```cmd
+git clone https://github.com/ireallydumb/protectlayer-edu.git
+cd protectlayer-edu
+setup.bat
+launch.bat
+```
+
+---
+
+**Ready? Start with setup.sh or setup.bat! 🚀**
