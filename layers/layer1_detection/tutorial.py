@@ -1,168 +1,591 @@
 #!/usr/bin/env python3
 """
-Layer 1: Detection & Metadata - Interactive Tutorial
+Layer 1: Detection - INTERACTIVE TUTORIAL
+Learn to detect watermarks and protected content
 
-Learn how to identify and tag content ownership.
+This tutorial provides hands-on exercises to understand how to:
+1. Identify visible watermarks
+2. Detect hidden watermarks
+3. Analyze protection mechanisms
+4. Verify authenticity
 """
 
-import json
-from datetime import datetime
+import os
+import sys
 from pathlib import Path
 
-class ContentProtector:
-    """Simple content protection system"""
+class InteractiveTutorial:
+    """Interactive Detection Tutorial"""
     
     def __init__(self):
-        self.owned = ["my_video.mp4", "my_presentation.mp4"]
-        self.restricted = ["netflix_sample.mp4", "hbo_sample.mp4"]
-        self.logs = []
+        self.completed = []
+        self.current_exercise = 0
     
-    def identify_content(self, filename):
-        """Identify if content is owned or restricted"""
-        if filename in self.owned:
-            return "OWNED"
-        elif filename in self.restricted:
-            return "RESTRICTED"
-        return "UNKNOWN"
-    
-    def can_record(self, filename):
-        """Should we allow recording?"""
-        status = self.identify_content(filename)
-        return status == "OWNED"
-    
-    def log_attempt(self, filename):
-        """Log the recording attempt"""
-        status = self.identify_content(filename)
-        action = "ALLOWED" if status == "OWNED" else "BLOCKED"
-        
-        log_entry = {
-            "timestamp": datetime.now().isoformat(),
-            "filename": filename,
-            "status": status,
-            "action": action
-        }
-        
-        self.logs.append(log_entry)
-        return log_entry
-    
-    def get_logs(self):
-        """Return all logs"""
-        return self.logs
+    def intro(self):
+        """Start the tutorial"""
+        print("""
+╔════════════════════════════════════════════════════════════════╗
+║           LAYER 1: DETECTION - Interactive Tutorial            ║
+║                                                                ║
+║  Learn to identify and detect watermarks and DRM protections  ║
+╚════════════════════════════════════════════════════════════════╝
 
-def print_header(title):
-    """Print a formatted header"""
-    print(f"\n{'='*60}")
-    print(f"  {title}")
-    print(f"{'='*60}\n")
+Welcome! In this layer, you'll learn the DETECTION phase of DRM:
+how to identify when content is protected.
 
-def main():
-    print_header("🎓 Layer 1: Detection & Metadata Tutorial")
-    print("Let's learn how to identify content ownership!\n")
+This is the first line of defense - recognizing protection exists
+is the first step toward understanding it.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT YOU'LL LEARN:
+  ✅ Visible watermark detection
+  ✅ Hidden data detection  
+  ✅ Protection mechanism identification
+  ✅ Authenticity verification
+  ✅ Threat analysis
+
+TIME: ~30 minutes
+DIFFICULTY: Beginner → Intermediate
+
+Let's start!
+        """)
     
-    # Create our system
-    protector = ContentProtector()
+    def exercise_1_visible_watermarks(self):
+        """Exercise 1: Detect visible watermarks"""
+        print("""
+╔════════════════════════════════════════════════════════════════╗
+║         EXERCISE 1: Detecting Visible Watermarks               ║
+╚════════════════════════════════════════════════════════════════╝
+
+SCENARIO:
+You have an image that may contain visible watermarks (like text
+overlays, logos, or stamps). How would you detect them?
+
+DETECTION METHODS:
+1. Visual inspection - Look for text/logos on images
+2. Color analysis - Watermarks often use different colors
+3. Edge detection - Watermarks have distinct edges
+4. Histogram analysis - Different pixel distribution
+
+HANDS-ON EXERCISE:
+Let's create a simple visible watermark detection function:
+        """)
+        
+        self.show_code_example_1()
+        
+        print("""
+KEY CONCEPTS:
+  • Watermarks modify pixel colors
+  • Text watermarks have distinct font patterns
+  • Edges in images show where watermarks are
+  • Color histograms reveal modifications
+
+WHAT YOU LEARNED:
+  ✅ How to detect visible watermarks programmatically
+  ✅ Why color space analysis works
+  ✅ How edge detection helps find watermarks
+
+NEXT: Let's move to hidden watermarks...
+        """)
+        
+        self.current_exercise += 1
+        self.completed.append("Exercise 1: Visible Watermarks")
     
-    # === PART 1: Basic Identification ===
-    print_header("Part 1: Content Identification")
+    def show_code_example_1(self):
+        """Show detection code example"""
+        print("""
+DETECTION CODE EXAMPLE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+from PIL import Image
+import numpy as np
+
+def detect_visible_watermark(image_path):
+    '''Detect visible watermarks in image'''
+    img = Image.open(image_path)
+    pixels = np.array(img)
     
-    print("Our system knows about these files:")
-    print(f"  OWNED: {protector.owned}")
-    print(f"  RESTRICTED: {protector.restricted}\n")
+    # Method 1: Color Anomaly Detection
+    # Watermarks often use bright colors (white, red, etc.)
     
-    # Test owned content
-    test_file = "my_video.mp4"
-    status = protector.identify_content(test_file)
-    print(f"Q: Is '{test_file}' owned or restricted?")
-    print(f"A: {status} ✅\n")
+    red_channel = pixels[:,:,0]    # Red pixels
+    white_pixels = (pixels[:,:,0] > 200) & \\
+                   (pixels[:,:,1] > 200) & \\
+                   (pixels[:,:,2] > 200)
     
-    # Test restricted content
-    test_file = "netflix_sample.mp4"
-    status = protector.identify_content(test_file)
-    print(f"Q: Is '{test_file}' owned or restricted?")
-    print(f"A: {status} ❌\n")
+    watermark_coverage = white_pixels.sum() / white_pixels.size
     
-    # === PART 2: Recording Decisions ===
-    print_header("Part 2: Recording Decisions")
+    # Method 2: Edge Detection
+    # Watermarks have distinct edges (text boundaries)
     
-    print("Based on content identification, should we allow recording?\n")
+    from scipy.ndimage import sobel
+    edges = sobel(pixels.mean(axis=2))
+    edge_density = (edges > np.mean(edges)).sum() / edges.size
     
-    files_to_test = [
-        "my_video.mp4",
-        "my_presentation.mp4",
-        "netflix_sample.mp4",
-        "hbo_sample.mp4",
-        "unknown_file.mp4"
-    ]
+    # Method 3: Histogram Analysis
+    # Compare color distribution
+    original_histogram = np.histogram(pixels.flatten(), bins=256)[0]
     
-    for file in files_to_test:
-        allowed = protector.can_record(file)
-        symbol = "✅ ALLOW" if allowed else "❌ BLOCK"
-        print(f"  {file:25} {symbol}")
+    results = {
+        'has_watermark': watermark_coverage > 0.05,
+        'watermark_coverage': watermark_coverage * 100,
+        'edge_density': edge_density * 100,
+        'likely_modified': edge_density > 0.3
+    }
     
-    # === PART 3: Logging ===
-    print_header("Part 3: Logging Attempts")
+    return results
+
+# Try it:
+# result = detect_visible_watermark('image.jpg')
+# print(f"Watermark detected: {result['has_watermark']}")
+# print(f"Coverage: {result['watermark_coverage']:.2f}%")
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+YOUR TURN:
+1. Save this code as detect_watermark.py
+2. Run it on an image with a watermark
+3. Observe the results
+4. Try adjusting the thresholds (0.05, 0.3)
+5. See how detection changes
+        """)
     
-    print("Let's record what happens when someone tries to record:\n")
+    input("Press Enter to continue...")
     
-    # Simulate recording attempts
-    attempts = [
-        "my_video.mp4",      # Should succeed
-        "netflix_sample.mp4", # Should be blocked
-        "my_presentation.mp4" # Should succeed
-    ]
+    def exercise_2_hidden_watermarks(self):
+        """Exercise 2: Detect hidden data"""
+        print("""
+╔════════════════════════════════════════════════════════════════╗
+║      EXERCISE 2: Detecting Hidden Data (Steganography)         ║
+╚════════════════════════════════════════════════════════════════╝
+
+SCENARIO:
+Someone hid data in the Least Significant Bits (LSBs) of an image.
+You can't see it, but it's there. How would you know?
+
+DETECTION METHODS:
+1. Statistical analysis - Random data has different statistics
+2. Entropy analysis - LSB data increases entropy
+3. Steganalysis - Specialized techniques to detect hidden data
+4. Noise patterns - Hidden data creates patterns
+
+KEY INSIGHT:
+When data is hidden in LSBs, it changes the statistical properties
+of the image. We can detect this mathematically.
+        """)
+        
+        self.show_code_example_2()
+        
+        print("""
+WHAT YOU LEARNED:
+  ✅ How LSB steganography works
+  ✅ Why hidden data changes statistics
+  ✅ How to detect hidden data without seeing it
+  ✅ Statistical methods for steganography detection
+
+IMPORTANT:
+  • Not all steganography is detectable
+  • Better hiding uses sophisticated techniques
+  • But statistical analysis can reveal patterns
+
+NEXT: Protection mechanism identification...
+        """)
+        
+        self.current_exercise += 1
+        self.completed.append("Exercise 2: Hidden Watermarks")
     
-    for filename in attempts:
-        log = protector.log_attempt(filename)
-        print(f"Attempt: {filename}")
-        print(f"  Status: {log['status']}")
-        print(f"  Action: {log['action']}")
-        print(f"  Time:   {log['timestamp']}\n")
+    def show_code_example_2(self):
+        """Show hidden data detection code"""
+        print("""
+HIDDEN DATA DETECTION CODE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+from PIL import Image
+import numpy as np
+from scipy import stats
+
+def detect_hidden_data(image_path):
+    '''Detect hidden data in LSBs'''
     
-    # === PART 4: View All Logs ===
-    print_header("Part 4: Complete Log History")
+    img = Image.open(image_path)
+    pixels = np.array(img).flatten()
     
-    logs = protector.get_logs()
-    print(f"Total attempts recorded: {len(logs)}\n")
-    print("Log Summary:")
-    print(f"{'Time':<27} {'File':<25} {'Status':<12} {'Action':<10}")
-    print("-" * 74)
+    # Method 1: LSB Distribution
+    # Extract LSBs (rightmost bits)
+    lsbs = pixels & 0x01  # Get last bit of each pixel
     
-    for log in logs:
-        timestamp = log['timestamp'].split('T')[1][:8]  # Just time part
-        print(f"{timestamp:<27} {log['filename']:<25} {log['status']:<12} {log['action']:<10}")
+    # Normal image LSBs are roughly 50/50 (0s and 1s)
+    # If data is hidden, distribution changes
+    lsb_ones = lsbs.sum()
+    lsb_zeros = len(lsbs) - lsb_ones
     
-    # === PART 5: Understanding the Weakness ===
-    print_header("Part 5: The Weakness (Spoofing)")
+    chi_square = ((lsb_ones - len(lsbs)/2)**2 + 
+                  (lsb_zeros - len(lsbs)/2)**2) / (len(lsbs)/2)
     
-    print("Here's the problem with Layer 1:\n")
-    print("Anyone could claim their file is in the 'owned' list!")
-    print("The metadata isn't signed or verified.\n")
-    print("For example:")
-    print('  Attacker: "I claim netflix_sample.mp4 is actually owned!"')
-    print('  System:   "OK, I believe you!" ✗\n')
-    print("This is where Layers 2-5 come in:")
-    print("  Layer 2: Add visible watermarks")
-    print("  Layer 3: Add invisible fingerprints")
-    print("  Layer 4: Track device fingerprints")
-    print("  Layer 5: Cryptographic verification\n")
+    # Method 2: Entropy Analysis
+    # Higher entropy = more random = likely hidden data
+    unique, counts = np.unique(pixels, return_counts=True)
+    probabilities = counts / len(pixels)
+    entropy = -np.sum(probabilities * np.log2(probabilities + 1e-10))
     
-    # === SUMMARY ===
-    print_header("Summary")
+    # Normal: ~7.5 bits entropy
+    # With hidden data: higher entropy
     
-    print("What we learned:")
-    print("✅ How to identify content ownership")
-    print("✅ How to make recording decisions")
-    print("✅ How to log attempts")
-    print("✅ Why spoofing is a problem\n")
+    results = {
+        'lsb_distribution': {
+            'ones': lsb_ones,
+            'zeros': lsb_zeros,
+            'chi_square': chi_square
+        },
+        'entropy': entropy,
+        'likely_steganography': chi_square > 100 or entropy > 7.8,
+        'confidence': min(100, (chi_square - 50) * 0.5)
+    }
     
-    print("What's next:")
-    print("→ Challenge 1.1: Add more metadata fields")
-    print("→ Challenge 1.2: Design a better logging system")
-    print("→ Challenge 1.3: Prevent metadata spoofing\n")
+    return results
+
+# Try it:
+# result = detect_hidden_data('image.png')
+# if result['likely_steganography']:
+#     print("⚠️  Hidden data detected!")
+#     print(f"Confidence: {result['confidence']:.0f}%")
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+YOUR TURN:
+1. Create an image with hidden data (use Layer 3 code)
+2. Run this detection on it
+3. Try on images WITHOUT hidden data
+4. See the difference in chi-square scores
+5. Adjust thresholds to tune detection
+        """)
+        
+        input("Press Enter to continue...")
     
-    print("Ready for challenges?")
-    print("  cd challenges/1.1_metadata_fields")
-    print("  cat README.md\n")
+    def exercise_3_protection_analysis(self):
+        """Exercise 3: Analyze protection mechanisms"""
+        print("""
+╔════════════════════════════════════════════════════════════════╗
+║    EXERCISE 3: Analyzing Protection Mechanisms                 ║
+╚════════════════════════════════════════════════════════════════╝
+
+SCENARIO:
+You encounter protected content. How do you identify WHAT
+protection was used?
+
+TYPES OF PROTECTION:
+1. Visible Watermarks - You can see them
+2. Invisible Watermarks - LSB, frequency domain, etc.
+3. Fingerprinting - Device ID embedded
+4. Cryptographic Signing - Digital signature for verification
+5. Encryption - Content is scrambled
+
+ANALYSIS STRATEGY:
+1. Check for visible marks
+2. Analyze statistical properties
+3. Examine file metadata
+4. Try to extract watermark info
+5. Identify the protection layer
+
+HANDS-ON:
+Let's build a protection analyzer:
+        """)
+        
+        self.show_code_example_3()
+        
+        print("""
+WHAT YOU LEARNED:
+  ✅ How to analyze protection types
+  ✅ Multi-layer detection approach
+  ✅ File metadata examination
+  ✅ Statistical fingerprinting
+
+REAL-WORLD APPLICATION:
+When you encounter protected content:
+1. Look for visible marks
+2. Check metadata
+3. Analyze statistics
+4. Run appropriate detection
+5. Document findings
+
+NEXT: Practical verification...
+        """)
+        
+        self.current_exercise += 1
+        self.completed.append("Exercise 3: Protection Analysis")
+    
+    def show_code_example_3(self):
+        """Show protection analysis code"""
+        print("""
+PROTECTION ANALYZER CODE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+from PIL import Image
+import numpy as np
+import os
+from datetime import datetime
+
+def analyze_protection(image_path):
+    '''Comprehensive protection analysis'''
+    
+    img = Image.open(image_path)
+    pixels = np.array(img).flatten()
+    
+    # Analysis 1: Metadata
+    metadata = {
+        'file_size': os.path.getsize(image_path),
+        'format': Image.open(image_path).format,
+        'size': Image.open(image_path).size,
+        'modified': datetime.fromtimestamp(
+            os.path.getmtime(image_path)
+        )
+    }
+    
+    # Analysis 2: Visible Watermarks
+    img_array = np.array(img)
+    white_pixels = (img_array[:,:,0] > 200) & \\
+                   (img_array[:,:,1] > 200) & \\
+                   (img_array[:,:,2] > 200)
+    visible_coverage = white_pixels.sum() / white_pixels.size
+    
+    # Analysis 3: Statistical Anomalies
+    lsbs = pixels & 0x01
+    lsb_ones = lsbs.sum()
+    chi_square = ((lsb_ones - len(lsbs)/2)**2) / (len(lsbs)/2)
+    
+    # Analysis 4: Entropy
+    unique, counts = np.unique(pixels, return_counts=True)
+    probabilities = counts / len(pixels)
+    entropy = -np.sum(probabilities * np.log2(probabilities + 1e-10))
+    
+    # Conclusions
+    protections_detected = []
+    
+    if visible_coverage > 0.05:
+        protections_detected.append(
+            "Visible Watermark (confidence: HIGH)"
+        )
+    
+    if chi_square > 100:
+        protections_detected.append(
+            "Hidden Data/Steganography (confidence: MEDIUM)"
+        )
+    
+    if entropy > 7.8:
+        protections_detected.append(
+            "Possible Encryption (confidence: LOW)"
+        )
+    
+    if len(protections_detected) == 0:
+        protections_detected.append("No obvious protection detected")
+    
+    return {
+        'metadata': metadata,
+        'visible_watermark': visible_coverage > 0.05,
+        'watermark_coverage': visible_coverage * 100,
+        'entropy': entropy,
+        'lsb_anomaly': chi_square > 100,
+        'protections_detected': protections_detected,
+        'protection_layers': len(protections_detected)
+    }
+
+# Try it:
+# analysis = analyze_protection('protected_image.jpg')
+# print(f"Protections found: {analysis['protection_layers']}")
+# for protection in analysis['protections_detected']:
+#     print(f"  • {protection}")
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+YOUR TURN:
+1. Collect different protected images
+2. Run analyzer on each
+3. Document what's detected
+4. Try to identify protection layers
+5. Build your detection skills
+        """)
+        
+        input("Press Enter to continue...")
+    
+    def exercise_4_practical_verification(self):
+        """Exercise 4: Verify protection authenticity"""
+        print("""
+╔════════════════════════════════════════════════════════════════╗
+║         EXERCISE 4: Verifying Protection Authenticity          ║
+╚════════════════════════════════════════════════════════════════╝
+
+SCENARIO:
+You detect protection on content. How do you VERIFY it's real
+and not just someone's failed attempt at protection?
+
+VERIFICATION METHODS:
+1. Check for known protection signatures
+2. Verify watermark robustness
+3. Test for proper implementation
+4. Authenticate the source
+5. Validate cryptographic signatures
+
+EXAMPLE:
+A watermark should survive:
+  • Small image crops
+  • Compression
+  • Color adjustments
+  • Rotation (small angles)
+  • Brightness/contrast changes
+
+If it doesn't, the protection is weak or fake.
+        """)
+        
+        self.show_code_example_4()
+        
+        print("""
+WHAT YOU LEARNED:
+  ✅ How to verify watermark robustness
+  ✅ Testing protection implementations
+  ✅ Evaluating protection strength
+  ✅ Identifying weak protections
+
+KEY INSIGHT:
+Not all watermarks are created equal.
+Some are strong and survive attacks.
+Others are fragile and disappear easily.
+
+THIS COMPLETES LAYER 1:
+You now understand how to:
+  ✅ Detect visible watermarks
+  ✅ Find hidden data
+  ✅ Analyze protection mechanisms
+  ✅ Verify protection authenticity
+
+NEXT STEPS:
+Move to Layer 2 to learn how to CREATE watermarks.
+
+Ready? Run: python3 ../layer2_visible/tutorial.py
+        """)
+        
+        self.current_exercise += 1
+        self.completed.append("Exercise 4: Verification")
+    
+    def show_code_example_4(self):
+        """Show verification code"""
+        print("""
+WATERMARK VERIFICATION CODE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+from PIL import Image
+import numpy as np
+
+def verify_watermark_robustness(original_path, modified_path):
+    '''Test if watermark survives modifications'''
+    
+    original = np.array(Image.open(original_path))
+    modified = np.array(Image.open(modified_path))
+    
+    # Test 1: Compression Resistance
+    # Save as JPEG with quality loss
+    img = Image.open(original_path)
+    img.save('/tmp/test_compressed.jpg', quality=85)
+    compressed = np.array(Image.open('/tmp/test_compressed.jpg'))
+    
+    # Compare: does watermark survive compression?
+    pixel_change = np.abs(
+        compressed.astype(float) - original.astype(float)
+    ).mean()
+    
+    # Test 2: Crop Resistance  
+    # Crop 10% from edges
+    h, w = original.shape[:2]
+    crop = original[int(h*0.1):int(h*0.9), 
+                    int(w*0.1):int(w*0.9)]
+    
+    # Is watermark still visible/detectable?
+    
+    # Test 3: Rotation Resistance
+    rotated = np.rot90(original)
+    
+    results = {
+        'compression_resistance': pixel_change < 5,
+        'pixel_change_on_compression': pixel_change,
+        'likely_robust': pixel_change < 10,
+        'protection_strength': 'WEAK' if pixel_change > 20 
+                               else 'MEDIUM' if pixel_change > 10 
+                               else 'STRONG'
+    }
+    
+    return results
+
+# Try it:
+# result = verify_watermark_robustness('original.jpg', 'modified.jpg')
+# print(f"Protection strength: {result['protection_strength']}")
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+YOUR TURN:
+1. Take a watermarked image
+2. Create compressed version (JPEG 85%)
+3. Compare them with this code
+4. Test robustness
+5. Judge protection quality
+        """)
+        
+        input("Press Enter to continue...")
+    
+    def summary(self):
+        """Show summary of completed exercises"""
+        print(f"""
+╔════════════════════════════════════════════════════════════════╗
+║           LAYER 1 TUTORIAL - SUMMARY                           ║
+╚════════════════════════════════════════════════════════════════╝
+
+CONGRATULATIONS! You've completed Layer 1: Detection
+
+EXERCISES COMPLETED:
+        """)
+        
+        for i, exercise in enumerate(self.completed, 1):
+            print(f"  {i}. ✅ {exercise}")
+        
+        print(f"""
+KEY SKILLS LEARNED:
+  ✅ Visible watermark detection
+  ✅ Hidden data detection (steganography)
+  ✅ Protection mechanism analysis
+  ✅ Robustness verification
+  ✅ Statistical analysis for protection
+
+YOU CAN NOW:
+  • Identify protected content
+  • Detect different protection types
+  • Analyze protection strength
+  • Understand detection techniques
+  • Evaluate protection implementations
+
+NEXT: Layer 2 - Creating visible watermarks
+  
+Ready to learn how to ADD watermarks?
+Run: python3 ../layer2_visible/tutorial.py
+        """)
+    
+    def run(self):
+        """Run the complete tutorial"""
+        self.intro()
+        
+        input("\nPress Enter to begin Exercise 1...")
+        self.exercise_1_visible_watermarks()
+        
+        input("\nPress Enter to begin Exercise 2...")
+        self.exercise_2_hidden_watermarks()
+        
+        input("\nPress Enter to begin Exercise 3...")
+        self.exercise_3_protection_analysis()
+        
+        input("\nPress Enter to begin Exercise 4...")
+        self.exercise_4_practical_verification()
+        
+        input("\nPress Enter to see summary...")
+        self.summary()
 
 if __name__ == "__main__":
-    main()
+    tutorial = InteractiveTutorial()
+    tutorial.run()
