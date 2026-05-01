@@ -1,7 +1,7 @@
 #!/bin/bash
 # verify_installation.sh - ProtectLayer Installation Verification Script
 
-set -e
+set +e  # Don't exit on error - we're counting them
 
 echo ""
 echo "╔════════════════════════════════════════════════════════════════════════╗"
@@ -18,11 +18,11 @@ WARNINGS=0
 check_command() {
     if command -v "$1" &> /dev/null; then
         echo "✅ $2"
-        ((PASS++))
+        PASS=$((PASS + 1))
         return 0
     else
         echo "❌ $2 ($1 not found)"
-        ((FAIL++))
+        FAIL=$((FAIL + 1))
         return 1
     fi
 }
@@ -30,11 +30,11 @@ check_command() {
 check_python_module() {
     if python3 -c "import $1" 2>/dev/null; then
         echo "✅ $2"
-        ((PASS++))
+        PASS=$((PASS + 1))
         return 0
     else
         echo "❌ $2 (module $1 not found)"
-        ((FAIL++))
+        FAIL=$((FAIL + 1))
         return 1
     fi
 }
@@ -42,11 +42,11 @@ check_python_module() {
 check_file() {
     if [ -f "$1" ]; then
         echo "✅ $2"
-        ((PASS++))
+        PASS=$((PASS + 1))
         return 0
     else
         echo "❌ $2 (file not found: $1)"
-        ((FAIL++))
+        FAIL=$((FAIL + 1))
         return 1
     fi
 }
@@ -54,11 +54,11 @@ check_file() {
 check_directory() {
     if [ -d "$1" ]; then
         echo "✅ $2"
-        ((PASS++))
+        PASS=$((PASS + 1))
         return 0
     else
         echo "❌ $2 (directory not found: $1)"
-        ((FAIL++))
+        FAIL=$((FAIL + 1))
         return 1
     fi
 }
@@ -77,10 +77,10 @@ check_directory "venv" "Virtual environment exists"
 if [ -d "venv" ]; then
     # Try to activate and check
     if [ -f "venv/bin/activate" ]; then
-        source venv/bin/activate
-        check_python_module "numpy" "NumPy package"
-        check_python_module "cv2" "OpenCV (cv2) package"
-        check_python_module "PIL" "Pillow (PIL) package"
+        source venv/bin/activate 2>/dev/null || true
+        check_python_module "numpy" "NumPy package" || true
+        check_python_module "cv2" "OpenCV (cv2) package" || true
+        check_python_module "PIL" "Pillow (PIL) package" || true
         deactivate 2>/dev/null || true
     fi
 fi
@@ -137,7 +137,7 @@ echo "❌ Failed:   $FAIL"
 echo "⚠️  Warnings: $WARNINGS"
 echo ""
 
-if [ $FAIL -eq 0 ]; then
+if [ "$FAIL" -eq 0 ]; then
     echo "═════════════════════════════════════════════════════════════════════════"
     echo ""
     echo "✅ INSTALLATION VERIFIED!"
