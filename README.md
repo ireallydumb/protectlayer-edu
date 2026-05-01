@@ -1,8 +1,14 @@
 # 🎙️ ProtectLayer - Educational DRM System
 
-A comprehensive, **layered educational platform** for learning about digital content protection, copy protection mechanisms, and cybersecurity principles.
+⚠️ **ALPHA VERSION - Layer 1 Complete, Layers 2-5 Coming Soon**
 
-Build your own protection systems layer-by-layer. Understand how digital rights management works. Learn from a practical, hands-on approach.
+A **layered educational platform** for learning about digital content protection, copy protection mechanisms, and cybersecurity principles.
+
+**Status:**
+- ✅ Layer 1: Detection (Tutorial + Setup infrastructure complete)
+- ⏳ Layers 2-5: Under development
+- ✅ Complete documentation & installation guides
+- See [REPO_AUDIT.md](REPO_AUDIT.md) for detailed status
 
 ## ❓ Quick Answers to Common Questions
 
